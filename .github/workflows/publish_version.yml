@@ -19,7 +19,7 @@ jobs:
         dotnet-version: '7.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore examen-si889-2025-ii-u2-nkmelndz.sln
 
     - name: Build application
       run: dotnet build --no-restore --configuration Release
