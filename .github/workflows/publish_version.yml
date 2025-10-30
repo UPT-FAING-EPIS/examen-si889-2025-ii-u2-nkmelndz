@@ -19,13 +19,13 @@ jobs:
         dotnet-version: '9.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore examen-si889-2025-ii-u2-nkmelndz.sln
 
     - name: Build application
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build examen-si889-2025-ii-u2-nkmelndz.sln --configuration Release --no-restore
 
     - name: Run tests
-      run: dotnet test --configuration Release --no-build --verbosity normal
+      run: dotnet test examen-si889-2025-ii-u2-nkmelndz.sln --configuration Release --no-build --verbosity normal
 
     - name: Upload test results
       uses: actions/upload-artifact@v4
