@@ -1,0 +1,40 @@
+name: Publish Documentation
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '7.0.x'
+
+    - name: Generate XML Documentation
+      run: dotnet build --configuration Release /p:DocumentationFile=bin/Release/net7.0/Documentation.xml
+
+    - name: Generate Class Diagram
+      run: |
+        mkdir -p diagrams
+        dotnet tool install --global PlantUmlClassDiagramGenerator
+        export PATH="$PATH:/home/runner/.dotnet/tools"
+        plantuml-gen . diagrams/diagram.puml
+
+    - name: Convert Diagram to PNG
+      run: |
+        sudo apt-get install -y graphviz
+        java -jar plantuml.jar diagrams/diagram.puml
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: diagrams
